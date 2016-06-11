@@ -1,0 +1,12 @@
+---
+- name: create certbot directory
+  file: path=/opt/certbot state=directory
+
+- name: download certbot-auto
+  get_url: url=https://dl.eff.org/certbot-auto dest=/opt/certbot/ mode=0755
+
+- name: request certificate
+  command: /opt/certbot/certbot-auto certonly --standalone --standalone-supported-challenges http-01 -d elk.chris.socha.technology --non-interactive --email sochac@gmail.com --agree-tos
+  register: certificate_request
+
+- debug: msg="{{ certificate_request.stdout }}"
