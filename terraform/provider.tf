@@ -1,5 +1,5 @@
 variable "access_key" {
-  default = "NOTHINGTOSEEHERE"
+  default = ""
 }
 
 provider "digitalocean" {

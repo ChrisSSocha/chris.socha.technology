@@ -5,8 +5,26 @@
 - name: download certbot-auto
   get_url: url=https://dl.eff.org/certbot-auto dest=/opt/certbot/ mode=0755
 
-- name: request certificate
-  command: /opt/certbot/certbot-auto certonly --standalone --standalone-supported-challenges http-01 -d elk.chris.socha.technology --non-interactive --email sochac@gmail.com --agree-tos
-  register: certificate_request
+- name: stop nginx
+  service: name=nginx state=stopped
+  ignore_errors: yes
 
-- debug: msg="{{ certificate_request.stdout }}"
+- name: request elk certificate
+  command: /opt/certbot/certbot-auto certonly --standalone --standalone-supported-challenges http-01 -d elk.chris.socha.technology --non-interactive --email sochac@gmail.com --agree-tos
+  args:
+    creates: /etc/letsencrypt/live/elk.chris.socha.technology
+  register: elk_certificate_request
+
+- name: request wiki certificate
+  command: /opt/certbot/certbot-auto certonly --standalone --standalone-supported-challenges http-01 -d wiki.chris.socha.technology --non-interactive --email sochac@gmail.com --agree-tos
+  args:
+    creates: /etc/letsencrypt/live/wiki.chris.socha.technology
+  register: wiki_certificate_request
+
+- name: start nginx
+  service: name=nginx state=started
+  ignore_errors: yes
+
+- debug: msg="{{ elk_certificate_request.stdout }}"
+
+- debug: msg="{{ wiki_certificate_request.stdout }}"

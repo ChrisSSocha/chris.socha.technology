@@ -1,0 +1,9 @@
+---
+- name: Setup Jekyll, ELK, and TiddlyWiki
+  hosts: chris-socha-technology
+  remote_user: root
+
+  roles:
+    - certbot
+    - nginx
+    - tiddlywiki

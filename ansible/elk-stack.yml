@@ -1,8 +1,0 @@
----
-- name: Install Nginx, ElasticSearch, and Kibana
-  hosts: elk-stack
-  remote_user: root
-
-  roles:
-    - certbot
-    - nginx

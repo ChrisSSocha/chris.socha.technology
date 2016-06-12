@@ -1,0 +1,25 @@
+---
+- name: Install node
+  apt: name=nodejs state=present update_cache=yes
+
+- name: Install npm
+  apt: name=npm state=present update_cache=yes
+
+- name: Link node to nodejs
+  file: src=/usr/bin/nodejs dest=/usr/bin/node state=link
+
+- name: Create tiddlywiki directory
+  file: path=/opt/tiddlywiki state=directory
+
+- name: Install "tiddlywiki" node.js package.
+  npm: name=tiddlywiki global=yes
+
+- name: Create new tiddlywiki server
+  command: tiddlywiki wiki --init server
+  args:
+    chdir: /opt/tiddlywiki
+    creates: /opt/tiddlywiki/wiki
+
+- name: Copy tiddlywiki updtart script
+  template: src=tiddlywiki.conf dest=/etc/init/tiddlywiki.conf
+  notify: restart tiddlywiki

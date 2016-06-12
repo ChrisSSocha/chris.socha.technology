@@ -1,6 +1,6 @@
-resource "digitalocean_droplet" "elk_stack" {
+resource "digitalocean_droplet" "chris_socha_technology" {
     image = "ubuntu-14-04-x64"
-    name = "elk-stack"
+    name = "chris-socha-technology"
     region = "lon1"
     size = "512mb"
     ssh_keys = [

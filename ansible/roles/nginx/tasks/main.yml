@@ -6,11 +6,28 @@
   file: path=/etc/nginx/sites-enabled/default state=absent
 
 - name: Create www directory
-  file: path=/var/www/elk state=directory
+  file: path=/var/www state=directory
 
-- name: Replace default page
-  template: src=index.html dest=/var/www/elk/index.html
+- name: Add default page
+  template: src=index.html dest=/var/www/index.html
 
 - name: Adds default config
   template: src=default.conf dest=/etc/nginx/conf.d/default.conf
   notify: restart nginx
+
+- name: Adds elk config
+  template: src=elk.conf dest=/etc/nginx/conf.d/elk.conf
+  notify: restart nginx
+
+- name: Adds wiki config
+  template: src=wiki.conf dest=/etc/nginx/conf.d/wiki.conf
+  notify: restart nginx
+
+- name: Install "python-passlib"
+  apt: name=python-passlib state=present update_cache=yes
+
+- name: Create passwdfile for wiki
+  htpasswd: "path=/etc/nginx/wiki.htpasswd name=wiki password={{secrets.wiki_password}}"
+
+- name: Create passwdfile for elk
+  htpasswd: "path=/etc/nginx/elk.htpasswd name=elk password={{secrets.elk_password}}"

@@ -2,12 +2,12 @@ resource "digitalocean_record" "elk_chris_socha_technology" {
     domain = "socha.technology"
     type = "A"
     name = "elk.chris"
-    value = "${digitalocean_droplet.elk_stack.ipv4_address}"
+    value = "${digitalocean_droplet.chris_socha_technology.ipv4_address}"
 }
 
-resource "digitalocean_record" "www_elk_chris_socha_technology" {
+resource "digitalocean_record" "wiki_chris_socha_technology" {
     domain = "socha.technology"
     type = "A"
-    name = "www.elk.chris"
-    value = "${digitalocean_droplet.elk_stack.ipv4_address}"
+    name = "wiki.chris"
+    value = "${digitalocean_droplet.chris_socha_technology.ipv4_address}"
 }
