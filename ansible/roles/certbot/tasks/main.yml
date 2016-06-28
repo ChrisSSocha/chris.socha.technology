@@ -25,6 +25,9 @@
   service: name=nginx state=started
   ignore_errors: yes
 
+- name: Add renew task to cron
+  cron: name="renew certificate" minute="53" hour="0" job="/opt/certbot/certbot-auto renew --standalone --pre-hook 'service nginx stop' --post-hook 'service nginx start' --quiet >> /var/log/renew-certificate.log 2>&1"
+
 - debug: msg="{{ elk_certificate_request.stdout }}"
 
 - debug: msg="{{ wiki_certificate_request.stdout }}"
